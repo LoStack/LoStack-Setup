@@ -2,7 +2,7 @@
 
 This readme covers the high-level setup of LoStack
 
-Currently only Ubuntu / Ubuntu Server and Rasbian have setup dedicated setup guides and scripts, however the instructions should be easy to follow on other systems like Fedora with some basic knowledge of your system.
+Currently only Ubuntu / Ubuntu Server and Rasbian have setup dedicated setup  scripts, however the instructions should be easy to follow on other systems with some basic knowledge.
 
 The main requirements are:
  - A host Linux OS with a static IP with support for Docker and the Docker Compose plugin
@@ -94,6 +94,6 @@ LoStack is currently in alpha, and things may break - it is not recommended for 
     - Assuming everything has gone correctly, you should now be able to access the site by going to https://lostack.lostack.dev/
     - You will get a warning about the site's certificate not being trusted, this is expected as the certificate is not signed by a known authority. 
     - To fix this, and prevent issues with websockets in some services, you should tell your system to trust the certificate.
-    - This varies by system, however you can normally click the lock icon to the left of the URL on your browser, click Certificate -> Details -> Export, then double-click the cert to install it. There may also be an additional step required to trust the certificate.
+    - This varies by system, however you can normally click the lock icon to the left of the URL on your browser, click Certificate -> Details -> Export, then double-click the cert in your system's file browser to install it. There may also be an additional step required to trust the certificate after installation.
 
- 7. At this point you should be good to go! Have fun playing with services, and please report any bugs! 
+ 7. At this point you should be good to go! Have fun playing with services, and please report any bugs!  
