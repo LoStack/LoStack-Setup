@@ -63,7 +63,7 @@ LoStack is currently in alpha, and things may break - it is not recommended for 
                 - `FIRST_RUN_SETUP_LDAP`
 
  4. First Launch
-    - LoStack's Docker containers mush be launch in a specific order the very first time it runs in order to properly create all needed config files.
+    - LoStack's Docker containers must be launched in a specific order the very first time it runs in order to properly create all needed config files.
         1. **OpenLDAP, MariaDB** -> These will be populated by LoStack First Run on the next step
         2. **LoStack First Run** -> Creates needed config files, and configures OpenLDAP and MariaDB 
         3. **Lostack Traefik Authelia** -> Start the login and reverse proxy system
