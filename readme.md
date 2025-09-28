@@ -46,6 +46,21 @@ LoStack is currently in alpha, and things may break - it is not recommended for 
     - Edit the .env file, the template contains detailed explanations for the various options. 
         - `nano ./.env`
             - If you do not have the ability to add a custom DNS record to your router, make sure you set `FIRST_RUN_CREATE_COREDNS_CONFIG=true` to generate the needed CoreDNS config file for later.
+            - Important variables:
+                - `HOSTNAME` - Hosts's base hostname (default: lostack)
+                - `DOMEXT` - Hosts's domain extension (default: internal)
+                - `HOST_IP` - Host's network IP
+                - `DNS_IP` - Primary DNS (usually 192.168.1.1)
+                - `TRUSTED_PROXYS` - LoStack trusted proxy IP (default should 'just work', set exact value after first launch)
+                - `ADMIN_PASSWORD`
+                - `DATABASE_PASSWORD`
+            - Also review these variables, these affect the first run setup process
+                - `FIRST_RUN_SETUP_MEDIA_FOLDERS`
+                - `FIRST_RUN_CREATE_SELF_SIGNED_CERT`
+                - `FIRST_RUN_CREATE_AUTHELIA_CONFIG`
+                - `FIRST_RUN_CREATE_TRAEFIK_CONFIG`
+                - `FIRST_RUN_CREATE_COREDNS_CONFIG`
+                - `FIRST_RUN_SETUP_LDAP`
 
  4. First Launch
     - LoStack's Docker containers mush be launch in a specific order the very first time it runs in order to properly create all needed config files.
