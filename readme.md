@@ -7,7 +7,7 @@ Currently only Ubuntu / Ubuntu Server and Rasbian have setup dedicated setup gui
 The main requirements are:
  - A host Linux OS with a static IP with support for Docker and the Docker Compose plugin
  - Basic DNS access, you need to be able to (best to worst):
-    - Create a DNS record on your router to point LoStack's hostname to its IP address (easiest, not all routers support it)
+    - Create a DNS record on your router to point LoStack's hostname to its IP address (easiest, but not all routers support it)
     - ***OR***
     - Add LoStack as a secondary DNS to your router
     - ***OR***
@@ -24,27 +24,26 @@ LoStack is currently in alpha, and things may break - it is not recommended for 
  1. Install an OS
     - Currently only Ubuntu / Ubuntu Server and Raspbian are officially supported hosts for the setup guide, however you can still follow along if you can install Docker and Docker Compose for your specific OS manually.
     - If you are using Ubuntu / Ubuntu Server *DO NOT* install Docker / Compose during the OS install - it will install the wrong version of Docker (usually through Snap) and Docker Compose will not work properly.
-    - You should set the OS up with a static IP if you are able to.
+    - If/when promted during setup, configure the device with a static IP address native to your local subnet (e.g. 192.168.1.X, 10.1.1.X, etc.).
     
  2. Clone Repo and Install Docker:
     - Make Docker dir, modify permissions, and move to it
         - `sudo mkdir -p /docker && sudo chmod -R 750 /docker && cd /docker`
     - Clone this repo into it
         - `git clone https://github.com/LoStack/LoStack-Setup ./`
-
     - Run the Docker install script for your system, this installs Docker and the Docker Compose plugin. If you already have Docker and Compose installed you can skip this step.
         - `sudo bash ./setup.sh`
             - This script will automatically select the right Debian version of the Docker Compose plugin, running `./scripts/setup-ubuntu.sh` or `./scripts/setup-arm.sh`
 
- 3. Configure Docker / LoStack
+ 4. Configure Docker / LoStack
     - Copy template.env to .env
         - `cp ./template.env ./.env`
     - Edit the .env file, the template contains detailed explanations for the various options. 
         - `nano ./.env`
             - If you do not have the ability to add a custom DNS record to your router, make sure you set `FIRST_RUN_CREATE_COREDNS_CONFIG=true` to generate the needed CoreDNS config file for later.
 
- 4. First Launch
-    - LoStack's Docker containers mush be launch in a specific order the very first time it runs in order to properly create all needed config files.
+ 5. First Launch
+    - LoStack's Docker containers must be launch in a specific order the very first time it runs in order to properly create all needed config files.
         1. **OpenLDAP, MariaDB** -> These will be populated by LoStack First Run on the next step
         2. **LoStack First Run** -> Creates needed config files, and configures OpenLDAP and MariaDB 
         3. **Lostack Traefik Authelia** -> Start the login and reverse proxy system
@@ -54,7 +53,7 @@ LoStack is currently in alpha, and things may break - it is not recommended for 
             - This will create all needed config files, populate OpenLDAP and MariaDB, and launch all services for the first time in the correct order.
         - Some containers (such as Authelia) will generate misconfigured default configuration files if launched without running the LoStack first launch process correctly.
 
- 5. DNS
+ 6. DNS
     
     At this point you will need to do one of the following:
     
@@ -90,10 +89,10 @@ LoStack is currently in alpha, and things may break - it is not recommended for 
         - This process varies based on the OS you are connecting with
         - This is not the recommended way to connect to LoStack, has not been well tested, and will likely require manual configuration per-subdomain.
     
- 6. Connecting + trusting self-signed certs
+ 7. Connecting + trusting self-signed certs
     - Assuming everything has gone correctly, you should now be able to access the site by going to https://lostack.lostack.dev/
     - You will get a warning about the site's certificate not being trusted, this is expected as the certificate is not signed by a known authority. 
     - To fix this, and prevent issues with websockets in some services, you should tell your system to trust the certificate.
     - This varies by system, however you can normally click the lock icon to the left of the URL on your browser, click Certificate -> Details -> Export, then double-click the cert to install it. There may also be an additional step required to trust the certificate.
 
- 7. At this point you should be good to go! Have fun playing with services, and please report any bugs! 
+ 8. At this point you should be good to go! Have fun playing with services, and please report any bugs! 
