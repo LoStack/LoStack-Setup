@@ -23,6 +23,10 @@ LoStack is currently in alpha, and things may break - it is not recommended for 
 
  1. Install an OS
     - Currently only Ubuntu / Ubuntu Server and Raspbian are officially supported hosts for the setup guide, however you can still follow along if you can install Docker and Docker Compose for your specific OS manually.
+    - *WARNING*
+        - Make sure to set the hostname with an extension
+        - For example, name your device lostack.internal or services.internal etc
+        - If you plan on using an externally signed certificate, set the hostname to the base hostname it will respond to, eg mysite.net with services on xyz.mysite.net
     - If you are using Ubuntu / Ubuntu Server *DO NOT* install Docker / Compose during the OS install - it will install the wrong version of Docker (usually through Snap) and Docker Compose will not work properly.
     - You should set the OS up with a static IP if you are able to.
     
