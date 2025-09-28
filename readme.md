@@ -27,12 +27,13 @@ LoStack is currently in alpha, and things may break - it is not recommended for 
         - Make sure to set the hostname with an extension
         - For example, name your device lostack.internal or services.internal etc
         - If you plan on using an externally signed certificate, set the hostname to the base hostname it will respond to, eg mysite.net with services on xyz.mysite.net
+        - If you forget, you can run `sudo hostnamectl set-hostname lostack.internal` (or your given hostname) then reboot for it to take effect.
     - If you are using Ubuntu / Ubuntu Server *DO NOT* install Docker / Compose during the OS install - it will install the wrong version of Docker (usually through Snap) and Docker Compose will not work properly.
     - You should set the OS up with a static IP if you are able to.
     
  2. Clone Repo and Install Docker:
     - Make Docker dir, modify permissions, and move to it
-        - `sudo mkdir -p /docker && sudo chmod -R 750 /docker && cd /docker`
+        - `sudo mkdir -p /docker && sudo chmod -R 755 /docker && sudo chown -R $USER:$USER /docker && cd /docker`
     - Clone this repo into it
         - `git clone https://github.com/LoStack/LoStack-Setup ./`
 

@@ -138,7 +138,7 @@ services:
       - "homepage.description=Users and Groups Service"
 
   lostack:
-    image: ghcr.io/osixia/openldap:latest
+    image: ghcr.io/lostack/lostack:sha256-8dba9884b2c20a133e88cf4e6fb7232d2a9f843ec692d030d9fb25044463e6bb.sig
     container_name: lostack
     hostname: lostack
     networks:
@@ -160,7 +160,7 @@ services:
       FIRST_RUN_SETUP_LDAP: ${FIRST_RUN_SETUP_LDAP:-true}
 
       # debug / dev
-      DEBUG: ${LOSTACK_DEBUG:=false}
+      DEBUG: ${LOSTACK_DEBUG:-false}
       DEPOT_DEV_MODE: ${LOSTACK_USE_LOCAL_DEPOT:-false}
 
       # proxy
@@ -168,6 +168,7 @@ services:
       USERNAME_HEADER: Remote-User
       GROUPS_HEADER: Remote-Groups
       TRUSTED_PROXY_IPS: ${TRUSTED_PROXYS}
+      DOMAIN_NAME: ${DOMAINNAME}
 
       # backend db
       DB_HOST: lostack-db
@@ -341,7 +342,7 @@ services:
       DNS_EXPIRATION_TIME: 5m
     volumes:
       - ${CONFIG_DIR}/coredns/config:/config/
-      - ${CONFIG_DIR}/coredns/Corefile:/data/Corefile
+      - ${CONFIG_DIR}/coredns/:/data/
     labels:
       - "homepage.name=CoreDNS"
       - "homepage.group=Background Services"
