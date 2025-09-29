@@ -70,7 +70,7 @@ LoStack is currently in alpha, and things may break - it is not recommended for 
         2. **LoStack First Run** -> Creates needed config files, and configures OpenLDAP and MariaDB 
         3. **Lostack Traefik Authelia** -> Start the login and reverse proxy system
         - A script is included to handle the first launch proceedure.
-        - *MAKE SURE YOU HAVE CONFIGURED YOUR ENV FILE BEFORE RUNNING THIS SCRIPT OR YOU WILL HAVE TO REMOVE CONTAINERS AND CONFIG FILES AND RE-RUN IT IS CERTAIN VARIABLES HAVE NOT BEEN CONFIGURED*
+        - *MAKE SURE YOU HAVE CONFIGURED YOUR ENV FILE BEFORE RUNNING THIS SCRIPT. YOU WILL HAVE TO REMOVE CONTAINERS AND CONFIG FILES AND RE-RUN IT IF CERTAIN VARIABLES ARE NOT BEEN CONFIGURED CORRECTLY ON THE FIRST RUN*
         - `sudo bash first_run.sh`
             - This will create all needed config files, populate OpenLDAP and MariaDB, and launch all services for the first time in the correct order.
         - Some containers (such as Authelia) will generate misconfigured default configuration files if launched without running the LoStack first launch process correctly.
@@ -103,7 +103,7 @@ LoStack is currently in alpha, and things may break - it is not recommended for 
     - Next, add the IP of your host to the router or access device as a secondary DNS:
         - Most routers support adding a secondary DNS
         - This method will make the services accessible to everyone on the network.
-        - If you add it as a secondary DNS directly on a device accessing the services, by other devices on the network won't resolve it. This method is useful if you are working with LoStack in a VM.
+        - If you add it as a secondary DNS directly on a device accessing the services, you will have to do it on every device that needs access.
 
     **OR**
     
