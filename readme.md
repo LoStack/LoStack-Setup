@@ -203,4 +203,4 @@ LoStack generates, reads, and manages a variety of config files
 #### Certificates
 - By default, LoStack supports a base domain certificate, and wildcard certificate
 - With some modification you can supply Traefik with Cloudflare certificates, or use LetsEncrypt or certbot.
-    - Help needed! Let us know if you want to contribute guides for different certificate / proxy configuration guides!
+    - Help needed! Let us know if you want to contribute guides for different certificate / proxy configuration setups!
