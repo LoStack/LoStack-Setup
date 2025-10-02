@@ -7,7 +7,7 @@ Currently only Ubuntu / Ubuntu Server and Rasbian have setup dedicated setup  sc
 The main requirements are:
  - A host Linux OS with a static IP with support for Docker and the Docker Compose plugin
  - Basic DNS access, you need to be able to (best to worst):
-    - Create a DNS record on your router to point LoStack's hostname to its IP address (easiest, not all routers support it)
+    - Create a DNS record on your router to point LoStack's hostname to its IP address (easiest, but not all routers support it)
     - ***OR***
     - Add LoStack as a secondary DNS to your router
     - ***OR***
@@ -28,14 +28,15 @@ LoStack is currently in alpha, and things may break - it is not recommended for 
         - If you plan on using an externally signed certificate, set the hostname to the base hostname it will respond to, eg mysite.net with services on xyz.mysite.net
         - If you forget, you can run `sudo hostnamectl set-hostname lostack.internal` (or your given hostname) then reboot for it to take effect.
     - If you are using Ubuntu / Ubuntu Server *DO NOT* install Docker / Compose during the OS install - it will install the wrong version of Docker (usually through Snap) and Docker Compose will not work properly.
-    - You should set the OS up with a static IP if you are able to.
+    - If prompted, configure the device with a static IP address.
+        - You may have to do this after installation on some operating systems.
+        - In some cases, you may be able to associate a MAC address with an IP on your router, some routers will reject devices that attempt to set a static IP.
     
  2. Clone Repo and Install Docker:
     - Make Docker dir, modify permissions, and move to it
         - `sudo mkdir -p /docker && sudo chmod -R 755 /docker && sudo chown -R $USER:$USER /docker && cd /docker`
     - Clone this repo into it
         - `git clone https://github.com/LoStack/LoStack-Setup ./`
-
     - Run the Docker install script for your system, this installs Docker and the Docker Compose plugin. If you already have Docker and Compose installed you can skip this step.
         - `sudo bash ./setup.sh`
             - This script will automatically select the right Debian version of the Docker Compose plugin, running `./scripts/setup-ubuntu.sh` or `./scripts/setup-arm.sh`
@@ -110,7 +111,7 @@ LoStack is currently in alpha, and things may break - it is not recommended for 
         - This process varies based on the OS you are connecting with
         - This is not the recommended way to connect to LoStack, has not been well tested, and will likely require manual configuration per-subdomain.
     
- 6. Connecting + trusting self-signed certs
+ 6. Connecting to LoStack + trusting self-signed certs
     - Assuming everything has gone correctly, you should now be able to access the site by going to https://lostack.lostack.internal/
     - You will get a warning about the site's certificate not being trusted, this is expected as the certificate is not signed by a known authority. 
     - To fix this, and prevent issues with websockets in some services, you should tell your system to trust the certificate.
