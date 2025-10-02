@@ -29,8 +29,11 @@ LoStack is currently in alpha, and things may break - it is not recommended for 
         - If you forget, you can run `sudo hostnamectl set-hostname lostack.internal` (or your given hostname) then reboot for it to take effect.
     - If you are using Ubuntu / Ubuntu Server *DO NOT* install Docker / Compose during the OS install - it will install the wrong version of Docker (usually through Snap) and Docker Compose will not work properly.
     - If prompted, configure the device with a static IP address.
+        - Make sure the IP is on yout local subnet
+            - Usually 192.168.1.X, 192.168.0.X, 10.1.1.X
         - You may have to do this after installation on some operating systems.
-        - In some cases, you may be able to associate a MAC address with an IP on your router, some routers will reject devices that attempt to set a static IP.
+        - In some cases, you may be able to associate a MAC address with an IP on your router.
+        - Some routers will reject devices that attempt to set a static IP.
     
  2. Clone Repo and Install Docker:
     - Make Docker dir, modify permissions, and move to it
