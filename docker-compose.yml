@@ -42,9 +42,9 @@ services:
       AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDITIONAL_GROUPS_DN: ou=groups
       AUTHELIA_AUTHENTICATION_BACKEND_LDAP_GROUPS_FILTER: (&(uniquemember={dn})(objectclass=groupOfUniqueNames))
       AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USER: cn=${LDAP_ADMIN_USER:-admin},${LDAP_BASE_DN}
-      DOMAINNAME: ${DOMAINNAME:-lostack.internal}
+      DOMAINNAME: ${DOMAINNAME}
       LDAP_ADMIN_PASSWORD: ${LDAP_ADMIN_PASSWORD}
-      CUST_AUTHELIA_PREFIX: ${AUTHELIA_PREFIX:-authelia}
+      CUST_AUTHELIA_PREFIX: ${AUTHELIA_PREFIX}
       CUST_AUTHELIA_MYSQL_USERNAME: lostack
       CUST_AUTHELIA_MYSQL_PASSWORD: ${DATABASE_PASSWORD}
       CUST_AUTHELIA_EXPIRATION: ${AUTHELIA_EXPIRATION:-24 hour} 
@@ -138,7 +138,7 @@ services:
       - "homepage.description=Users and Groups Service"
 
   lostack:
-    image: ghcr.io/lostack/lostack:sha256-8dba9884b2c20a133e88cf4e6fb7232d2a9f843ec692d030d9fb25044463e6bb.sig
+    image: ghcr.io/LoStack/LoStack:main
     container_name: lostack
     hostname: lostack
     networks:
@@ -152,23 +152,26 @@ services:
       TZ: ${TZ}
       
       # First run configuration
-      FIRST_RUN_CREATE_SELF_SIGNED_CERT: ${FIRST_RUN_CREATE_SELF_SIGNED_CERT:-true}
-      FIRST_RUN_SETUP_MEDIA_FOLDERS: ${FIRST_RUN_SETUP_MEDIA_FOLDERS:-true}
-      FIRST_RUN_CREATE_AUTHELIA_CONFIG: ${FIRST_RUN_CREATE_AUTHELIA_CONFIG:-true}
-      FIRST_RUN_CREATE_TRAEFIK_CONFIG: ${FIRST_RUN_CREATE_TRAEFIK_CONFIG:-true}
-      FIRST_RUN_CREATE_COREDNS_CONFIG: ${FIRST_RUN_CREATE_COREDNS_CONFIG:-false}
-      FIRST_RUN_SETUP_LDAP: ${FIRST_RUN_SETUP_LDAP:-true}
+      FIRST_RUN_CREATE_SELF_SIGNED_CERT: ${FIRST_RUN_CREATE_SELF_SIGNED_CERT}
+      FIRST_RUN_SETUP_MEDIA_FOLDERS: ${FIRST_RUN_SETUP_MEDIA_FOLDERS}
+      FIRST_RUN_CREATE_AUTHELIA_CONFIG: ${FIRST_RUN_CREATE_AUTHELIA_CONFIG}
+      FIRST_RUN_CREATE_TRAEFIK_CONFIG: ${FIRST_RUN_CREATE_TRAEFIK_CONFIG}
+      FIRST_RUN_CREATE_COREDNS_CONFIG: ${FIRST_RUN_CREATE_COREDNS_CONFIG}
+      FIRST_RUN_SETUP_LDAP: ${FIRST_RUN_SETUP_LDAP}
+      FIRST_RUN_ADDITIONAL_LDAP_GROUPS: ${FIRST_RUN_ADDITIONAL_LDAP_GROUPS}
+
+      # custom depot
+      DEPOT_URL: ${LOSTACK_DEPOT_URL}
 
       # debug / dev
-      DEBUG: ${LOSTACK_DEBUG:-false}
+      DEBUG: ${LOSTACK_DEBUG}
       DEPOT_DEV_MODE: ${LOSTACK_USE_LOCAL_DEPOT:-false}
 
       # proxy
-      ADMIN_GROUP: admins
+      ADMIN_GROUP: ${LDAP_ADMIN_GROUP}
       USERNAME_HEADER: Remote-User
       GROUPS_HEADER: Remote-Groups
       TRUSTED_PROXY_IPS: ${TRUSTED_PROXYS}
-      DOMAIN_NAME: ${DOMAINNAME}
 
       # backend db
       DB_HOST: lostack-db
@@ -185,7 +188,6 @@ services:
       LDAP_ORGANISATION: ${LDAP_ORGANISATION:-lostack.internal}
       LDAP_DOMAIN: ${DOMAINNAME:-lostack.internal}
       LDAP_BASE_DN: ${LDAP_BASE_DN:-dc=lostack,dc=internal}
-      LDAP_ADMINS_GROUP: admins
       LDAP_ADMIN_USERNAME: ${LDAP_ADMIN_USER:-admin}
       LDAP_ADMIN_PASSWORD: ${LDAP_ADMIN_PASSWORD:-first_time_login_password}
       LDAP_ADMIN_BIND_DN: "cn=${LDAP_ADMIN_USER:-admin},${LDAP_BASE_DN:-dc=lostack,dc=internal}"
@@ -217,6 +219,10 @@ services:
       - "lostack.group=lostack"
       - "lostack.duration=5m"
       - "lostack.primary=true"
+      - "lostack.force_disable_autostart=true"
+      - "lostack.force_disable_access_control=true"
+      - "lostack.force_disable_autoupdate=true"
+      - "lostack.force_compose_edit=true"
 
   lostack-db:
     image: mariadb:10.11
@@ -283,7 +289,7 @@ services:
       - ${TRAEFIK_PORT_HTTP}:80
       - ${TRAEFIK_PORT_HTTPS}:443
     volumes:
-      - ${DOCKER_SOCKET:-/var/run/docker.sock}:/var/run/docker.sock:ro
+      - ${DOCKER_SOCKET}:/var/run/docker.sock:ro
       - ${CERTS_DIR}:/certs:ro
       - ${CONFIG_DIR}/traefik/:/dynamic
       - ${LOGS_DIR}/traefik:/logs
@@ -318,12 +324,16 @@ services:
       - "homepage.href=https://traefik.${DOMAINNAME}/"
       - "lostack.enable=true"
       - "lostack.port=80"
-      - "lostack.autostart=false"
-      - "lostack.autoupdate=false"
-      - "lostack.access_control=false"
+      - "lostack.autostart=false" # DO NOT ENABLE
+      - "lostack.autoupdate=false" # DO NOT ENABLE
+      - "lostack.access_control=false" # DO NOT ENABLE
       - "lostack.group=traefik"
-      - "lostack.duration=5m"
+      - "lostack.duration=999h"
       - "lostack.primary=true"
+      - "lostack.force_disable_autostart=true"
+      - "lostack.force_disable_access_control=true"
+      - "lostack.force_disable_autoupdate=true"
+      - "lostack.force_compose_edit=true" # Prevents editing in gui
 
   # Optional container - adds local dns if you can't create records on your router
   coredns:
@@ -342,7 +352,7 @@ services:
       DNS_EXPIRATION_TIME: 5m
     volumes:
       - ${CONFIG_DIR}/coredns/config:/config/
-      - ${CONFIG_DIR}/coredns/:/data/
+      - ${CONFIG_DIR}/coredns/Corefile:/data/Corefile
     labels:
       - "homepage.name=CoreDNS"
       - "homepage.group=Background Services"

@@ -55,7 +55,7 @@ LoStack is currently in alpha, and things may break - it is not recommended for 
             - `TRUSTED_PROXYS` - LoStack trusted proxy IP (default should 'just work', set exact value after first launch)
             - `ADMIN_PASSWORD`
             - `DATABASE_PASSWORD`
-        - Also review the following variables, these affect the first run setup process
+        - Also review the following variables, these affect the first run setup process. You may need to provide your own configuration files if you disable certain options.
             - `FIRST_RUN_SETUP_MEDIA_FOLDERS`
             - `FIRST_RUN_CREATE_SELF_SIGNED_CERT`
             - `FIRST_RUN_CREATE_AUTHELIA_CONFIG`
@@ -111,7 +111,7 @@ LoStack is currently in alpha, and things may break - it is not recommended for 
         - This is not the recommended way to connect to LoStack, has not been well tested, and will likely require manual configuration per-subdomain.
     
  6. Connecting + trusting self-signed certs
-    - Assuming everything has gone correctly, you should now be able to access the site by going to https://lostack.lostack.dev/
+    - Assuming everything has gone correctly, you should now be able to access the site by going to https://lostack.lostack.internal/
     - You will get a warning about the site's certificate not being trusted, this is expected as the certificate is not signed by a known authority. 
     - To fix this, and prevent issues with websockets in some services, you should tell your system to trust the certificate.
     - This varies by system, however you can normally click the lock icon to the left of the URL on your browser, click Certificate -> Details -> Export, then double-click the cert in your system's file browser to install it. There may also be an additional step required to trust the certificate after installation.
@@ -191,7 +191,16 @@ LoStack generates, reads, and manages a variety of config files
 
 
 ## Additional / Optional Config
+#### Authelia
+- You can edit `${CONFIGDIR}/authelia/configuration.yml` to add more advanced access control and other things to Authelia
+#### CoreDNS
+- Assuming you installed CoreDNS as the primary resolver, you can edit `${CONFIGFIR}/coredns/Corefile` modify how CoreDNS works. By default, it answers `*.DOMAIN.EXT` (or whatever you configured) with `${HOST_IP}` 
 #### Traefik
-    - If you want to add your own routes / configuration to Traefik, create a new .yml file in `${CONFIGDIR}/traefik`
-        - You can create as many configuration files as you want in this folder. See [Traefik Configuration Overview](https://doc.traefik.io/traefik/getting-started/configuration-overview/) for more info.
-        - LoStack does *NOT* use Traefik labeling to create routes - instead it loads the info from LoStack's own simplified labels. These populate LoStack's database on initial service launch, and the generated Traefik config is written to `${CONFIGDIR}/traefik/lostack-dynamic.yml`. 
+- If you want to add your own routes / configuration to Traefik, create a new .yml file in `${CONFIGDIR}/traefik`
+    - You can create as many configuration files as you want in this folder. See [Traefik Configuration Overview](https://doc.traefik.io/traefik/getting-started/configuration-overview/) for more info.
+    - LoStack does *NOT* use Traefik labeling to create routes - instead it loads the info from LoStack's own simplified labels. These populate LoStack's database on initial service launch, and the generated Traefik config is written to `${CONFIGDIR}/traefik/lostack-dynamic.yml`. 
+- You should use `${CONFIGDIR}/traefik/dynamic.yml`for configuring Traefik options other than routing / services, such as middlware and advanced certificate handling.
+#### Certificates
+- By default, LoStack supports a base domain certificate, and wildcard certificate
+- With some modification you can supply Traefik with Cloudflare certificates, or use LetsEncrypt or certbot.
+    - Help needed! Let us know if you want to contribute guides for different certificate / proxy configuration guides!
