@@ -331,7 +331,7 @@ services:
       - "lostack.duration=999h"
       - "lostack.primary=true"
       - "lostack.force_disable_autostart=true"
-      - "lostack.force_disable_access_control=true"
+      - "lostack.force_disable_access_control=false"
       - "lostack.force_disable_autoupdate=true"
       - "lostack.force_compose_edit=true" # Prevents editing in gui
 
