@@ -205,24 +205,9 @@ services:
       - ${CONFIG_DIR}:/config
       - ${DOCKER_SOCKET}:/var/run/docker.sock
       - ${MEDIA_DIR}:/media
-    labels:
-      - "homepage.name=LoStack App"
-      - "homepage.group=Apps"
-      - "homepage.icon=/images/lostack.png"
-      - "homepage.description=Docker Manager"
+    labels: 
+      # Most labels ship with lostack, however the URL can't be set on build
       - "homepage.href=https://lostack.${DOMAINNAME}/"
-      - "lostack.enable=true"
-      - "lostack.port=80"
-      - "lostack.autostart=false"
-      - "lostack.autoupdate=false"
-      - "lostack.access_control=false"
-      - "lostack.group=lostack"
-      - "lostack.duration=5m"
-      - "lostack.primary=true"
-      - "lostack.force_disable_autostart=true"
-      - "lostack.force_disable_access_control=true"
-      - "lostack.force_disable_autoupdate=true"
-      - "lostack.force_compose_edit=true"
 
   lostack-db:
     image: mariadb:10.11
