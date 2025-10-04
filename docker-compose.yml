@@ -150,6 +150,7 @@ services:
     environment:
       # config
       TZ: ${TZ}
+      DOMAIN_NAME: ${DOMAIN_NAME}
       
       # First run configuration
       FIRST_RUN_CREATE_SELF_SIGNED_CERT: ${FIRST_RUN_CREATE_SELF_SIGNED_CERT}
