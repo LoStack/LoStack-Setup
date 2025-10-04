@@ -138,7 +138,7 @@ services:
       - "homepage.description=Users and Groups Service"
 
   lostack:
-    image: ghcr.io/LoStack/LoStack:main
+    image: ghcr.io/lostack/lostack:main
     container_name: lostack
     hostname: lostack
     networks:
